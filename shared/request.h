@@ -12,14 +12,6 @@ namespace http
     class Request
     {
     public:
-        Request(Server& app, Response& res) 
-            : m_App(app), m_Res(res)
-        {
-
-        }
-
-        ~Request() {}
-
         Server& app() const {
             return m_App;
         }
@@ -36,6 +28,10 @@ namespace http
             return m_Parser.method();
         }
 
+        const Buffer& url() const {
+            return m_Parser.url();
+        }
+
         const Buffer& version() const {
             return m_Parser.version();
         }
@@ -49,6 +45,18 @@ namespace http
         }
 
     private:
+        Request(Server& app, Response& res) 
+            : m_App(app), m_Res(res)
+        {
+
+        }
+
+        void parse(Buffer& buf) {
+            m_Parser.execute(buf);
+        }
+
+    private:
+        friend class ConnectionHandler;
         RequestParser m_Parser;
         Server& m_App;
         Response& m_Res;

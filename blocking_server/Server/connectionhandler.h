@@ -12,7 +12,7 @@ namespace http
         Q_OBJECT
         Q_DISABLE_COPY(ConnectionHandler)
     public:
-        ConnectionHandler(Handler handle, QObject* parent = nullptr);
+        ConnectionHandler(Server* app, QObject* parent = nullptr);
         ~ConnectionHandler();
     
     public slots:
@@ -20,18 +20,20 @@ namespace http
 
     private slots:
         void onReadyRead();
-        void onSocketError(QAbstractSocket::SocketError );
-        void onThreadDone();
+        void onReadyWrite(const char*);
         void onReadTimerTimeout();
         void onSocketDisconnected();
+        void onSocketError(QAbstractSocket::SocketError);
     
     private:
         void _createSocket();
 
     private:
-        QTcpSocket m_Socket;
-        QTimer m_ReadTimer;
-        Handler m_Handler;
+        Server* m_App;
+        QTcpSocket* m_Socket;
+        QTimer* m_ReadTimer;
+        Request* m_Request;
+        Response* m_Response;
     };
 } // namespace http
 

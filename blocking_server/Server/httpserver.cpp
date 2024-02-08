@@ -5,6 +5,8 @@ namespace http
     Server::Server(QObject* parent)
         : QObject(parent), m_Server()
     {
+        qDebug() << "Server: Initializing\n";
+        qRegisterMetaType<qintptr>("qintptr");
         connect(&m_Server, &TcpServerWrapper::newConnection, this, &Server::onConnection);
     }
     
@@ -32,10 +34,22 @@ namespace http
     void Server::incomingConnection(qintptr socketDescriptor)
     {
         qDebug() << "Server: Detected new incoming connection\n";
+        
+        m_Handler = new ConnectionHandler(this);
+        QMetaObject::invokeMethod(m_Handler, "handleConnection", Qt::DirectConnection, Q_ARG(qintptr, socketDescriptor));
     }
     
     void Server::onConnection(qintptr socketDescriptor)
     {
         incomingConnection(socketDescriptor);
+    }
+    
+    void Server::handle(Request& request, Response& response, Next next)
+    {
+        // echo request
+        Buffer res = "Recieved HTTP: " + request.method() + "\n"
+                        + "Requested URL: " + request.url() + "\n"
+                        + "Hello world!";
+        response.send(res);
     }
 }

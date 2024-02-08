@@ -7,8 +7,6 @@ int main(int argc, char** argv)
 
     using namespace http;
     Server app;
-
-
     
     app.listen(8080, [&app](){
         qDebug() << "Server started listening on port: " << app.serverPort();

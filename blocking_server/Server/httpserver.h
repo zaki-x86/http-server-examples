@@ -32,8 +32,11 @@ namespace http
 
     private:
         void onConnection(qintptr socketDescriptor);
+        void handle(Request& request, Response& response, Next next);
 
     private:
+        friend class ConnectionHandler;
+        ConnectionHandler* m_Handler;
         TcpServerWrapper m_Server;
     };
 } // namespace networxx
