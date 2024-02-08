@@ -1,0 +1,5 @@
+project(non_blocking_server)
+
+file(GLOB_RECURSE SERVER_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
+
+add_executable(${PROJECT_NAME} ${SERVER_SOURCES} ${SHARED_SOURCES})
