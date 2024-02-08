@@ -14,6 +14,8 @@ namespace http {
     class ConnectionHandler;
     class Router;
 
+    class IServer;
+
     using Next = std::function<void(std::exception_ptr)>;
     using Handler = std::function<void(Request&, Response&, Next)>;
 }

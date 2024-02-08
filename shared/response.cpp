@@ -5,7 +5,7 @@
 
 using namespace http;
 
-Response::Response(Server& app, Request& req, QObject* parent)
+Response::Response(IServer* app, Request* req, QObject* parent)
     : m_App(app), m_Request(req), QObject(parent)
 {
     m_Status = 404;

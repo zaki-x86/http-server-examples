@@ -8,10 +8,11 @@
 #include "response.h"
 #include "qtcpserverwrapper.h"
 #include "connectionhandler.h"
+#include "serverinterface.h"
 
 namespace http
 {
-    class Server : public QObject {
+    class Server : public IServer {
         Q_OBJECT
         Q_DISABLE_COPY(Server)
 
@@ -19,23 +20,21 @@ namespace http
         Server(QObject* parent = 0);
         ~Server();
 
-        void listen(quint16 port, std::function<void()> callback = 0);
+        void listen(quint16 port, std::function<void()> callback = 0) override;
 
-        void close();
+        void close() override;
 
-        int serverPort();
+        int serverPort() override;
 
         //void use(Router& router);
     
     protected:
-        virtual void incomingConnection(qintptr socketDescriptor);
+        void incomingConnection(qintptr socketDescriptor) override;
 
     private:
-        void onConnection(qintptr socketDescriptor);
-        void handle(Request& request, Response& response, Next next);
+        void handle(Request& request, Response& response) override;
 
     private:
-        friend class ConnectionHandler;
         ConnectionHandler* m_Handler;
         TcpServerWrapper m_Server;
     };

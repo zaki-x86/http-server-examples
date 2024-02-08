@@ -3,7 +3,7 @@
 namespace http
 {
     Server::Server(QObject* parent)
-        : QObject(parent), m_Server()
+        : IServer(parent), m_Server()
     {
         qDebug() << "Server: Initializing\n";
         qRegisterMetaType<qintptr>("qintptr");
@@ -39,12 +39,7 @@ namespace http
         QMetaObject::invokeMethod(m_Handler, "handleConnection", Qt::DirectConnection, Q_ARG(qintptr, socketDescriptor));
     }
     
-    void Server::onConnection(qintptr socketDescriptor)
-    {
-        incomingConnection(socketDescriptor);
-    }
-    
-    void Server::handle(Request& request, Response& response, Next next)
+    void Server::handle(Request& request, Response& response)
     {
         // echo request
         Buffer res = "Recieved HTTP: " + request.method() + "\n"

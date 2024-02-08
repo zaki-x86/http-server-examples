@@ -2,17 +2,16 @@
 
 #include "request.h"
 #include "response.h"
-#include "httpserver.h"
+#include "serverinterface.h"
 
-
-http::ConnectionHandler::ConnectionHandler(Server* app, QObject *parent) 
+http::ConnectionHandler::ConnectionHandler(IServer* app, QObject *parent) 
     :m_App(app), QObject(parent) {
         qDebug() << "ConnectionHandler::ConnectionHandler initializing signals and slots";
 
         _createSocket();
         m_ReadTimer = new QTimer();
-        m_Request = new Request(*m_App, *m_Response);
-    m_Response = new Response(*m_App, *m_Request);
+        m_Request = new Request(m_App, m_Response);
+        m_Response = new Response(m_App, m_Request);
         m_ReadTimer->setSingleShot(true);
 
         connect(m_Socket, &QTcpSocket::readyRead, this, &ConnectionHandler::onReadyRead);
@@ -61,7 +60,7 @@ void http::ConnectionHandler::onReadyRead() {
         auto buf = m_Socket->readAll();
         m_Request->parse(buf);
 
-        m_App->handle(*m_Request, *m_Response, nullptr);
+        m_App->handle(*m_Request, *m_Response);
 
         qDebug() << "Writing: " << m_Response->raw();
     }

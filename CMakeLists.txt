@@ -46,6 +46,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 include_directories(
     ${CMAKE_BINARY_DIR}/_deps/qhttp-src/QHttp
     ${SHARED_DIR}
+    ${CMAKE_SOURCE_DIR}/blocking_server
+    ${CMAKE_SOURCE_DIR}/non_blocking_server
 )
 
 link_libraries(QHttp Qt5::Core Qt5::Network)

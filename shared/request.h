@@ -3,7 +3,7 @@
 
 #include "globals.h"
 #include <QHttp.h>
-
+#include "serverinterface.h"
 
 namespace http
 {
@@ -12,11 +12,11 @@ namespace http
     class Request
     {
     public:
-        Server& app() const {
+        IServer* app() const {
             return m_App;
         }
 
-        Response& res() const {
+        Response* res() const {
             return m_Res;
         }
 
@@ -45,7 +45,7 @@ namespace http
         }
 
     private:
-        Request(Server& app, Response& res) 
+        Request(IServer* app, Response* res) 
             : m_App(app), m_Res(res)
         {
 
@@ -58,8 +58,8 @@ namespace http
     private:
         friend class ConnectionHandler;
         RequestParser m_Parser;
-        Server& m_App;
-        Response& m_Res;
+        IServer* m_App;
+        Response* m_Res;
     };
     
 } // namespace http

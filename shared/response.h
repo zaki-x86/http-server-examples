@@ -5,7 +5,7 @@
 #include <QObject>
 
 #include "globals.h"
-
+#include "serverinterface.h"
 
 namespace http
 {
@@ -20,8 +20,8 @@ namespace http
 
     private:
         friend class ConnectionHandler;
-        Server& m_App;
-        Request& m_Request;
+        IServer* m_App;
+        Request* m_Request;
         Buffer m_Body;
         BufferMap m_Headers;
         int m_Status;
@@ -29,7 +29,7 @@ namespace http
         bool m_HeadersSent;
 
     private:
-        Response(Server& app, Request& req, QObject* parent = 0);
+        Response(IServer* app, Request* req, QObject* parent = 0);
     };
 
     
