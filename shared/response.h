@@ -13,6 +13,7 @@ namespace http
         Q_OBJECT
     public:
         void send(Buffer& text, int status = 200);
+        void send(const char* text, int status = 200);
         Buffer raw() const;
 
     signals:

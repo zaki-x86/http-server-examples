@@ -27,6 +27,17 @@ void Response::send(Buffer& text, int status) {
     m_HeadersSent = true;
 }
 
+void Response::send(const char* text, int status)
+{
+    m_Status = status;
+    m_StatusDesc = "OK";
+    m_Body = text;
+    m_Headers["Content-Length"] = Buffer::number(m_Body.size());
+    
+    emit responseReady(raw().constData());
+    m_HeadersSent = true;
+}
+
 Buffer Response::raw() const {
     Buffer buffer;
     buffer.append("HTTP/1.1 ");
