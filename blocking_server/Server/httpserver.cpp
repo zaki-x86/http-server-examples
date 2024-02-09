@@ -36,7 +36,8 @@ namespace http
         qDebug() << "Server: Detected new incoming connection\n";
         
         m_Handler = new ConnectionHandler(this);
-        QMetaObject::invokeMethod(m_Handler, "handleConnection", Qt::DirectConnection, Q_ARG(qintptr, socketDescriptor));
+        m_Handler->handleConnection(socketDescriptor);
+        //QMetaObject::invokeMethod(m_Handler, "handleConnection", Qt::DirectConnection, Q_ARG(qintptr, socketDescriptor));
     }
     
     void Server::handle(Request& request, Response& response)
