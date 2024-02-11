@@ -2,15 +2,15 @@
 
 namespace http
 {
-    Server::Server(QObject* parent)
-        : QObject(parent), m_Server()
+    Server::Server(IServer* parent)
+        : IServer(parent), m_Server()
     {
         connect(&m_Server, &TcpServerWrapper::newConnection, this, &Server::onConnection);
     }
     
     Server::~Server()
     {
-        
+
     }
     
     void Server::listen(quint16 port, std::function<void()> callback)
@@ -31,11 +31,12 @@ namespace http
     
     void Server::incomingConnection(qintptr socketDescriptor)
     {
-        qDebug() << "Server: Detected new incoming connection\n";
+        
     }
     
-    void Server::onConnection(qintptr socketDescriptor)
+    void Server::handle(Request& request, Response& response)
     {
-        incomingConnection(socketDescriptor);
+        response.send("Hello world!");
     }
+
 }

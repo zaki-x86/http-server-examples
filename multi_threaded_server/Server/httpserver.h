@@ -7,33 +7,37 @@
 #include "request.h"
 #include "response.h"
 #include "qtcpserverwrapper.h"
+#include "serverinterface.h"
+#include "connectionhandler.h"
 
+#include <QThread>
 namespace http
 {
-    class Server : public QObject {
+    class Server : public IServer {
         Q_OBJECT
         Q_DISABLE_COPY(Server)
 
     public:
-        Server(QObject* parent = 0);
+        Server(IServer* parent = 0);
         ~Server();
 
-        void listen(quint16 port, std::function<void()> callback = 0);
+        void listen(quint16 port, std::function<void()> callback = 0) override;
 
-        void close();
+        void close() override;
 
-        int serverPort();
+        int serverPort() override;
 
         //void use(Router& router);
     
     protected:
-        virtual void incomingConnection(qintptr socketDescriptor);
+        void incomingConnection(qintptr socketDescriptor) override;
 
     private:
-        void onConnection(qintptr socketDescriptor);
+        void handle(Request& request, Response& response) override;
 
     private:
         TcpServerWrapper m_Server;
+        
     };
 } // namespace networxx
 

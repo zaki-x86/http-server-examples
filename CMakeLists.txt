@@ -11,7 +11,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-find_package(Qt5 COMPONENTS Core Network REQUIRED)
+find_package(Qt5 COMPONENTS Core Network Concurrent REQUIRED)
 
 ####
 # Get dependecies
@@ -48,7 +48,7 @@ include_directories(
     ${SHARED_DIR}
 )
 
-link_libraries(QHttp Qt5::Core Qt5::Network)
+link_libraries(QHttp Qt5::Core Qt5::Network Qt5::Concurrent)
 
-add_subdirectory(blocking_server)
-add_subdirectory(non_blocking_server)
+add_subdirectory(single_threaded_server)
+add_subdirectory(multi_threaded_server)
